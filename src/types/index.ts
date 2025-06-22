@@ -5,6 +5,7 @@ export interface Category {
   slug: string;
   description: string;
   color: string;
+  postCount: number;
   createdAt: Date;
 }
 
@@ -13,6 +14,7 @@ export interface User {
   name: string;
   email: string;
   avatar?: string;
+  bio?: string;
   role: 'admin' | 'user';
   createdAt: Date;
 }
@@ -29,8 +31,11 @@ export interface Post {
   authorId: string;
   author?: User;
   published: boolean;
+  status: 'published' | 'draft';
+  featured: boolean;
   views: number;
   likes: number;
+  comments: number;
   createdAt: Date;
   updatedAt: Date;
 }
