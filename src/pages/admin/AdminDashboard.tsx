@@ -209,7 +209,7 @@ const AdminDashboard = () => {
                   </span>
                 </div>
               </div>
-            </Car dContent>
+            </CardContent>
           </Card>
         </div>
       </div>
