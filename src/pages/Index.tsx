@@ -1,11 +1,12 @@
 
 import { useState, useMemo, useEffect } from 'react';
-import { Search, Filter, TrendingUp, Calendar, Eye, Star, ArrowRight, Flame, BookOpen } from 'lucide-react';
+import { Search, Filter, TrendingUp, Calendar, Eye, Star, ArrowRight, Flame, BookOpen, Users, Award, Zap, ChevronRight } from 'lucide-react';
 import { PostCard } from '@/components/PostCard';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Badge } from '@/components/ui/badge';
+import { Card, CardContent } from '@/components/ui/card';
 import { siteConfig } from '@/config/site';
 import { databaseService } from '@/lib/database';
 import { Category, Post } from '@/types';
@@ -67,90 +68,81 @@ const Index = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50 flex items-center justify-center">
+      <div className="min-h-screen bg-white flex items-center justify-center">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-blue-600 mx-auto mb-4"></div>
-          <p className="text-xl text-gray-600">Loading amazing content...</p>
+          <div className="animate-spin rounded-full h-16 w-16 border-2 border-gray-900 border-t-transparent mx-auto mb-4"></div>
+          <p className="text-lg text-gray-600">Loading content...</p>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50">
+    <div className="min-h-screen bg-white">
       {/* Hero Section */}
-      <section className="relative overflow-hidden py-24 px-4 sm:px-6 lg:px-8">
-        <div className="absolute inset-0 bg-gradient-to-r from-blue-600/20 via-purple-600/20 to-indigo-600/20"></div>
-        <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPGcgZmlsbD0ibm9uZSIgZmlsbC1ydWxlPSJldmVub2RkIj4KPGcgZmlsbD0iIzlDOTJBQyIgZmlsbC1vcGFjaXR5PSIwLjEiPgo8Y2lyY2xlIGN4PSIzMCIgY3k9IjMwIiByPSIxIi8+CjwvZz4KPC9nPgo8L3N2Zz4=')]"></div>
-        <div className="relative max-w-7xl mx-auto">
+      <section className="bg-gray-50 py-20 px-4 sm:px-6 lg:px-8">
+        <div className="max-w-7xl mx-auto">
           <div className="text-center mb-16">
-            <div className="inline-flex items-center gap-2 bg-white/90 backdrop-blur-sm px-4 py-2 rounded-full text-sm font-medium text-blue-600 mb-6 shadow-lg">
-              <Star className="w-4 h-4 fill-current" />
-              Welcome to the Future of Blogging
-            </div>
-            <h1 className="text-6xl md:text-8xl font-bold mb-8 bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-600 bg-clip-text text-transparent leading-tight">
-              {siteConfig.name}
+            <Badge className="bg-gray-900 text-white mb-6 px-4 py-2 text-sm font-medium">
+              Welcome to {siteConfig.name}
+            </Badge>
+            <h1 className="text-5xl md:text-7xl font-bold text-gray-900 mb-8 leading-tight">
+              Discover Amazing<br />
+              <span className="text-gray-600">Stories & Ideas</span>
             </h1>
-            <p className="text-xl md:text-2xl mb-12 text-slate-600 max-w-4xl mx-auto leading-relaxed">
-              Discover extraordinary stories, insights, and ideas that shape tomorrow. Join our community of curious minds and passionate creators.
+            <p className="text-xl text-gray-600 max-w-3xl mx-auto mb-12 leading-relaxed">
+              Join thousands of readers exploring insightful articles, trending topics, and expert perspectives on technology, lifestyle, business, and more.
             </p>
             
-            {/* Search Bar */}
-            <div className="max-w-2xl mx-auto mb-8">
-              <div className="relative">
-                <Search className="absolute left-6 top-1/2 transform -translate-y-1/2 text-slate-400 w-6 h-6" />
-                <Input
-                  type="text"
-                  placeholder="Search for amazing stories..."
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  className="pl-16 pr-6 py-6 text-lg rounded-2xl border-0 bg-white/95 backdrop-blur-sm shadow-xl focus:shadow-2xl transition-all ring-2 ring-transparent focus:ring-blue-500/20"
-                />
-              </div>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-12">
+              <Button size="lg" className="bg-gray-900 hover:bg-gray-800 text-white px-8 py-4 text-lg font-medium">
+                <BookOpen className="w-5 h-5 mr-2" />
+                Start Reading
+              </Button>
+              <Button variant="outline" size="lg" className="border-gray-300 hover:border-gray-900 px-8 py-4 text-lg font-medium">
+                Browse Categories
+                <ArrowRight className="w-5 h-5 ml-2" />
+              </Button>
             </div>
 
-            {/* CTA Buttons */}
-            <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-              <Button size="lg" className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 rounded-xl px-8 py-6 text-lg font-semibold shadow-xl hover:shadow-2xl transform hover:scale-105 transition-all">
-                <BookOpen className="w-5 h-5 mr-2" />
-                Explore Stories
-              </Button>
-              <Button variant="outline" size="lg" className="border-2 border-slate-300 hover:border-blue-500 rounded-xl px-8 py-6 text-lg font-semibold bg-white/80 backdrop-blur-sm">
-                <ArrowRight className="w-5 h-5 mr-2" />
-                Browse Categories
-              </Button>
+            {/* Search Bar */}
+            <div className="max-w-xl mx-auto">
+              <div className="relative">
+                <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
+                <Input
+                  type="text"
+                  placeholder="Search articles..."
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  className="pl-12 pr-4 py-4 text-lg border-gray-200 focus:border-gray-900 focus:ring-gray-900"
+                />
+              </div>
             </div>
           </div>
         </div>
       </section>
 
       {/* Stats Section */}
-      <section className="py-16 bg-white/60 backdrop-blur-sm border-y border-white/20">
+      <section className="py-16 bg-white border-b border-gray-100">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
-            <div className="space-y-3">
-              <div className="text-4xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
-                {posts.length}+
-              </div>
-              <div className="text-slate-600 font-medium">Amazing Stories</div>
+            <div className="space-y-2">
+              <div className="text-3xl font-bold text-gray-900">{posts.length}+</div>
+              <div className="text-gray-600 font-medium">Articles</div>
             </div>
-            <div className="space-y-3">
-              <div className="text-4xl font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
-                {categories.length}+
-              </div>
-              <div className="text-slate-600 font-medium">Categories</div>
+            <div className="space-y-2">
+              <div className="text-3xl font-bold text-gray-900">{categories.length}+</div>
+              <div className="text-gray-600 font-medium">Categories</div>
             </div>
-            <div className="space-y-3">
-              <div className="text-4xl font-bold bg-gradient-to-r from-green-600 to-blue-600 bg-clip-text text-transparent">
-                {posts.reduce((sum, post) => sum + post.views, 0)}+
+            <div className="space-y-2">
+              <div className="text-3xl font-bold text-gray-900">
+                {Math.round(posts.reduce((sum, post) => sum + post.views, 0) / 1000)}K+
               </div>
-              <div className="text-slate-600 font-medium">Total Views</div>
+              <div className="text-gray-600 font-medium">Readers</div>
             </div>
-            <div className="space-y-3">
-              <div className="text-4xl font-bold bg-gradient-to-r from-orange-600 to-red-600 bg-clip-text text-transparent">
-                AI-Powered
-              </div>
-              <div className="text-slate-600 font-medium">Content Creation</div>
+            <div className="space-y-2">
+              <div className="text-3xl font-bold text-gray-900">100%</div>
+              <div className="text-gray-600 font-medium">Quality Content</div>
             </div>
           </div>
         </div>
@@ -158,47 +150,46 @@ const Index = () => {
 
       {/* Featured Posts */}
       {featuredPosts.length > 0 && (
-        <section className="py-20 bg-gradient-to-r from-slate-50 to-blue-50">
+        <section className="py-20 bg-white">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-16">
-              <div className="inline-flex items-center gap-2 bg-gradient-to-r from-yellow-400 to-orange-500 text-white px-4 py-2 rounded-full text-sm font-bold mb-4">
-                <Star className="w-4 h-4 fill-current" />
-                FEATURED
-              </div>
-              <h2 className="text-5xl font-bold text-slate-900 mb-6">Editor&rsquo;s Choice</h2>
-              <p className="text-xl text-slate-600 max-w-2xl mx-auto">
-                Handpicked stories that deserve your attention
+              <h2 className="text-4xl font-bold text-gray-900 mb-4">Featured Stories</h2>
+              <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+                Handpicked articles that showcase the best of our content
               </p>
             </div>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-              {featuredPosts.map((post, index) => (
-                <div key={post.id} className={`${index === 0 ? 'md:col-span-2 md:row-span-2' : ''}`}>
-                  <PostCard post={post} featured={index === 0} />
-                </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {featuredPosts.map((post) => (
+                <PostCard key={post.id} post={post} />
               ))}
             </div>
           </div>
         </section>
       )}
 
-      {/* Categories Showcase */}
-      <section className="py-20 bg-white">
+      {/* Categories Section */}
+      <section className="py-20 bg-gray-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
-            <h2 className="text-5xl font-bold text-slate-900 mb-6">Explore by Topic</h2>
-            <p className="text-xl text-slate-600 max-w-2xl mx-auto">
-              Dive deep into subjects that matter to you
+            <h2 className="text-4xl font-bold text-gray-900 mb-4">Explore Topics</h2>
+            <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+              Discover content organized by your interests
             </p>
           </div>
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
             {categories.map((category) => (
               <Link key={category.id} to={`/category/${category.slug}`}>
-                <div className={`${category.color} hover:scale-105 transition-all duration-300 rounded-2xl p-6 text-center cursor-pointer shadow-lg hover:shadow-xl`}>
-                  <div className="text-white">
-                    <h3 className="font-bold text-lg mb-2">{category.name}</h3>
-                    <p className="text-sm opacity-90">{posts.filter(p => p.categoryId === category.id).length} posts</p>
-                  </div>
-                </div>
+                <Card className="hover:shadow-lg transition-all duration-300 cursor-pointer border-0 bg-white">
+                  <CardContent className="p-6 text-center">
+                    <div className={`w-12 h-12 ${category.color} rounded-lg flex items-center justify-center mx-auto mb-4`}>
+                      <BookOpen className="w-6 h-6 text-white" />
+                    </div>
+                    <h3 className="font-semibold text-gray-900 mb-2">{category.name}</h3>
+                    <p className="text-sm text-gray-600">
+                      {posts.filter(p => p.categoryId === category.id).length} articles
+                    </p>
+                  </CardContent>
+                </Card>
               </Link>
             ))}
           </div>
@@ -207,16 +198,16 @@ const Index = () => {
 
       {/* Trending Posts */}
       {trendingPosts.length > 0 && (
-        <section className="py-20 bg-gradient-to-r from-orange-50 to-red-50">
+        <section className="py-20 bg-white">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-16">
-              <div className="inline-flex items-center gap-2 bg-gradient-to-r from-orange-500 to-red-500 text-white px-4 py-2 rounded-full text-sm font-bold mb-4">
+              <div className="inline-flex items-center gap-2 bg-orange-100 text-orange-800 px-4 py-2 rounded-full text-sm font-medium mb-4">
                 <Flame className="w-4 h-4" />
-                TRENDING NOW
+                Trending Now
               </div>
-              <h2 className="text-5xl font-bold text-slate-900 mb-6">What&rsquo;s Hot</h2>
-              <p className="text-xl text-slate-600 max-w-2xl mx-auto">
-                The most popular stories everyone&rsquo;s talking about
+              <h2 className="text-4xl font-bold text-gray-900 mb-4">Popular This Week</h2>
+              <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+                The most-read articles by our community
               </p>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -228,31 +219,86 @@ const Index = () => {
         </section>
       )}
 
-      {/* All Posts Section */}
-      <section className="py-20 bg-slate-50">
+      {/* Why Choose Us Section */}
+      <section className="py-20 bg-gray-900 text-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
-            <h2 className="text-5xl font-bold text-slate-900 mb-6">All Stories</h2>
-            <p className="text-xl text-slate-600">Discover more amazing content</p>
+            <h2 className="text-4xl font-bold mb-4">Why Readers Love Us</h2>
+            <p className="text-lg text-gray-300 max-w-2xl mx-auto">
+              We deliver high-quality content that informs, inspires, and engages
+            </p>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div className="text-center">
+              <div className="w-16 h-16 bg-white bg-opacity-10 rounded-lg flex items-center justify-center mx-auto mb-6">
+                <Award className="w-8 h-8" />
+              </div>
+              <h3 className="text-xl font-semibold mb-4">Expert Authors</h3>
+              <p className="text-gray-300">Content written by industry experts and thought leaders</p>
+            </div>
+            <div className="text-center">
+              <div className="w-16 h-16 bg-white bg-opacity-10 rounded-lg flex items-center justify-center mx-auto mb-6">
+                <Zap className="w-8 h-8" />
+              </div>
+              <h3 className="text-xl font-semibold mb-4">Fresh Content</h3>
+              <p className="text-gray-300">New articles published regularly to keep you informed</p>
+            </div>
+            <div className="text-center">
+              <div className="w-16 h-16 bg-white bg-opacity-10 rounded-lg flex items-center justify-center mx-auto mb-6">
+                <Users className="w-8 h-8" />
+              </div>
+              <h3 className="text-xl font-semibold mb-4">Community Driven</h3>
+              <p className="text-gray-300">Join thousands of readers in meaningful discussions</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Newsletter Section */}
+      <section className="py-20 bg-gray-50">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <h2 className="text-4xl font-bold text-gray-900 mb-4">Stay Updated</h2>
+          <p className="text-lg text-gray-600 mb-8 max-w-2xl mx-auto">
+            Get the latest articles and insights delivered straight to your inbox
+          </p>
+          <div className="flex flex-col sm:flex-row gap-4 max-w-md mx-auto">
+            <Input 
+              type="email" 
+              placeholder="Enter your email" 
+              className="flex-1 border-gray-200 focus:border-gray-900 focus:ring-gray-900"
+            />
+            <Button className="bg-gray-900 hover:bg-gray-800 text-white px-8">
+              Subscribe
+            </Button>
+          </div>
+        </div>
+      </section>
+
+      {/* All Posts Section */}
+      <section className="py-20 bg-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl font-bold text-gray-900 mb-4">Latest Articles</h2>
+            <p className="text-lg text-gray-600">Discover more amazing content</p>
           </div>
 
           {/* Filters */}
-          <div className="flex flex-col lg:flex-row gap-6 mb-12 bg-white rounded-2xl p-6 shadow-lg">
+          <div className="flex flex-col lg:flex-row gap-6 mb-12 bg-gray-50 rounded-xl p-6">
             <div className="flex-1">
               <div className="relative">
-                <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-slate-400 w-5 h-5" />
+                <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
                 <Input
                   type="text"
-                  placeholder="Search stories..."
+                  placeholder="Search articles..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  className="pl-12 pr-4 py-3 rounded-xl border-slate-200 focus:ring-blue-500"
+                  className="pl-12 pr-4 py-3 border-gray-200 focus:border-gray-900 focus:ring-gray-900"
                 />
               </div>
             </div>
             <div className="flex gap-4">
               <Select value={selectedCategory} onValueChange={setSelectedCategory}>
-                <SelectTrigger className="w-48 rounded-xl border-slate-200">
+                <SelectTrigger className="w-48 border-gray-200">
                   <Filter className="w-4 h-4 mr-2" />
                   <SelectValue placeholder="Category" />
                 </SelectTrigger>
@@ -266,7 +312,7 @@ const Index = () => {
                 </SelectContent>
               </Select>
               <Select value={sortBy} onValueChange={setSortBy}>
-                <SelectTrigger className="w-48 rounded-xl border-slate-200">
+                <SelectTrigger className="w-48 border-gray-200">
                   <SelectValue placeholder="Sort by" />
                 </SelectTrigger>
                 <SelectContent>
@@ -303,10 +349,10 @@ const Index = () => {
             </div>
           ) : (
             <div className="text-center py-20">
-              <div className="text-8xl mb-6">📚</div>
-              <h3 className="text-3xl font-bold text-slate-900 mb-4">No stories found</h3>
-              <p className="text-xl text-slate-600 mb-8">Try adjusting your search or browse our categories</p>
-              <Button asChild className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 rounded-xl px-8 py-4">
+              <div className="text-6xl mb-6">📚</div>
+              <h3 className="text-2xl font-bold text-gray-900 mb-4">No articles found</h3>
+              <p className="text-lg text-gray-600 mb-8">Try adjusting your search or browse our categories</p>
+              <Button asChild className="bg-gray-900 hover:bg-gray-800 text-white px-8 py-4">
                 <Link to="/categories">Browse Categories</Link>
               </Button>
             </div>
