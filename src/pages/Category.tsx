@@ -5,11 +5,11 @@ import { PostCard } from '@/components/PostCard';
 import { Badge } from '@/components/ui/badge';
 import { Folder } from 'lucide-react';
 import { databaseService } from '@/lib/database';
-import { Category, Post } from '@/types';
+import type { Category as CategoryType, Post } from '@/types';
 
 const Category = () => {
   const { slug } = useParams();
-  const [category, setCategory] = useState<Category | null>(null);
+  const [category, setCategory] = useState<CategoryType | null>(null);
   const [posts, setPosts] = useState<Post[]>([]);
   const [loading, setLoading] = useState(true);
 

@@ -33,6 +33,7 @@ export interface Post {
   published: boolean;
   status: 'published' | 'draft';
   featured: boolean;
+  trending: boolean;
   views: number;
   likes: number;
   comments: number;
