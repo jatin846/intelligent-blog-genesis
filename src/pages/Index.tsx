@@ -81,7 +81,7 @@ const Index = () => {
       {/* Hero Section */}
       <section className="relative overflow-hidden py-24 px-4 sm:px-6 lg:px-8">
         <div className="absolute inset-0 bg-gradient-to-r from-blue-600/20 via-purple-600/20 to-indigo-600/20"></div>
-        <div className="absolute inset-0 bg-[url('data:image/svg+xml,%3Csvg width="60" height="60" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg"%3E%3Cg fill="none" fill-rule="evenodd"%3E%3Cg fill="%239C92AC" fill-opacity="0.1"%3E%3Ccircle cx="30" cy="30" r="1"/%3E%3C/g%3E%3C/g%3E%3C/svg%3E')]"></div>
+        <div className="absolute inset-0 bg-[url('data:image/svg+xml,%3Csvg width=\"60\" height=\"60\" viewBox=\"0 0 60 60\" xmlns=\"http://www.w3.org/2000/svg\"%3E%3Cg fill=\"none\" fill-rule=\"evenodd\"%3E%3Cg fill=\"%239C92AC\" fill-opacity=\"0.1\"%3E%3Ccircle cx=\"30\" cy=\"30\" r=\"1\"/%3E%3C/g%3E%3C/g%3E%3C/svg%3E')]"></div>
         <div className="relative max-w-7xl mx-auto">
           <div className="text-center mb-16">
             <div className="inline-flex items-center gap-2 bg-white/90 backdrop-blur-sm px-4 py-2 rounded-full text-sm font-medium text-blue-600 mb-6 shadow-lg">
@@ -165,7 +165,7 @@ const Index = () => {
                 <Star className="w-4 h-4 fill-current" />
                 FEATURED
               </div>
-              <h2 className="text-5xl font-bold text-slate-900 mb-6">Editor's Choice</h2>
+              <h2 className="text-5xl font-bold text-slate-900 mb-6">Editor&rsquo;s Choice</h2>
               <p className="text-xl text-slate-600 max-w-2xl mx-auto">
                 Handpicked stories that deserve your attention
               </p>
@@ -214,9 +214,9 @@ const Index = () => {
                 <Flame className="w-4 h-4" />
                 TRENDING NOW
               </div>
-              <h2 className="text-5xl font-bold text-slate-900 mb-6">What's Hot</h2>
+              <h2 className="text-5xl font-bold text-slate-900 mb-6">What&rsquo;s Hot</h2>
               <p className="text-xl text-slate-600 max-w-2xl mx-auto">
-                The most popular stories everyone's talking about
+                The most popular stories everyone&rsquo;s talking about
               </p>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
