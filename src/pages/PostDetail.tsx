@@ -1,17 +1,48 @@
 
 import { useParams } from 'react-router-dom';
-import { Calendar, User, Eye, Heart, MessageCircle, Share2 } from 'lucide-react';
+import { useState, useEffect } from 'react';
+import { Calendar, User, Eye, Heart, MessageCircle, Share2, Flame, Star } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent } from '@/components/ui/card';
 import { Textarea } from '@/components/ui/textarea';
-import { mockPosts, mockCategories, mockUsers } from '@/lib/mockData';
+import { databaseService } from '@/lib/database';
+import { Post } from '@/types';
 
 const PostDetail = () => {
   const { slug } = useParams();
-  const post = mockPosts.find(p => p.slug === slug);
-  const category = post ? mockCategories.find(c => c.id === post.categoryId) : null;
-  const author = post ? mockUsers.find(u => u.id === post.authorId) : null;
+  const [post, setPost] = useState<Post | null>(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchPost = async () => {
+      if (!slug) return;
+      
+      try {
+        const postData = await databaseService.getPostBySlug(slug);
+        setPost(postData);
+        
+        // Increment view count
+        if (postData) {
+          await databaseService.incrementPostViews(slug);
+        }
+      } catch (error) {
+        console.error('Error fetching post:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchPost();
+  }, [slug]);
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-blue-600"></div>
+      </div>
+    );
+  }
 
   if (!post) {
     return (
@@ -29,35 +60,63 @@ const PostDetail = () => {
       <article className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Header */}
         <div className="mb-8">
-          {category && (
-            <Badge className={`${category.color} text-white mb-4`}>
-              {category.name}
-            </Badge>
-          )}
+          <div className="flex flex-wrap gap-2 mb-4">
+            {post.category && (
+              <Badge className={`${post.category.color} text-white`}>
+                {post.category.name}
+              </Badge>
+            )}
+            {post.featured && (
+              <Badge className="bg-gradient-to-r from-yellow-400 to-orange-500 text-white">
+                <Star className="w-3 h-3 mr-1 fill-current" />
+                Featured
+              </Badge>
+            )}
+            {post.trending && (
+              <Badge className="bg-gradient-to-r from-orange-500 to-red-500 text-white">
+                <Flame className="w-3 h-3 mr-1" />
+                Trending
+              </Badge>
+            )}
+          </div>
+          
           <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6 leading-tight">
             {post.title}
           </h1>
+          
           <div className="flex items-center justify-between flex-wrap gap-4 mb-8">
             <div className="flex items-center space-x-6">
-              {author && (
-                <div className="flex items-center space-x-2">
-                  <User className="w-5 h-5 text-gray-500" />
-                  <span className="text-gray-700 font-medium">{author.name}</span>
+              {post.author && (
+                <div className="flex items-center space-x-3">
+                  {post.author.avatar ? (
+                    <img 
+                      src={post.author.avatar} 
+                      alt={post.author.name}
+                      className="w-8 h-8 rounded-full object-cover"
+                    />
+                  ) : (
+                    <User className="w-5 h-5 text-gray-500" />
+                  )}
+                  <span className="text-gray-700 font-medium">{post.author.name}</span>
                 </div>
               )}
               <div className="flex items-center space-x-2">
                 <Calendar className="w-5 h-5 text-gray-500" />
-                <span className="text-gray-700">{post.createdAt.toLocaleDateString()}</span>
+                <span className="text-gray-700">{post.createdAt.toLocaleDateString('en-US', {
+                  year: 'numeric',
+                  month: 'long',
+                  day: 'numeric'
+                })}</span>
               </div>
             </div>
             <div className="flex items-center space-x-6 text-gray-500">
               <div className="flex items-center space-x-1">
                 <Eye className="w-4 h-4" />
-                <span>{post.views}</span>
+                <span>{post.views.toLocaleString()}</span>
               </div>
               <div className="flex items-center space-x-1">
                 <Heart className="w-4 h-4" />
-                <span>{post.likes}</span>
+                <span>{post.likes.toLocaleString()}</span>
               </div>
               <div className="flex items-center space-x-1">
                 <MessageCircle className="w-4 h-4" />
@@ -91,7 +150,7 @@ const PostDetail = () => {
           <div className="flex items-center space-x-4">
             <Button variant="outline" className="flex items-center space-x-2">
               <Heart className="w-4 h-4" />
-              <span>Like ({post.likes})</span>
+              <span>Like ({post.likes.toLocaleString()})</span>
             </Button>
             <Button variant="outline" className="flex items-center space-x-2">
               <Share2 className="w-4 h-4" />

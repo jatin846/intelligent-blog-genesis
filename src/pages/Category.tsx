@@ -1,16 +1,50 @@
 
 import { useParams } from 'react-router-dom';
-import { mockCategories, mockPosts } from '@/lib/mockData';
+import { useState, useEffect } from 'react';
 import { PostCard } from '@/components/PostCard';
 import { Badge } from '@/components/ui/badge';
 import { Folder } from 'lucide-react';
+import { databaseService } from '@/lib/database';
+import { Category, Post } from '@/types';
 
 const Category = () => {
   const { slug } = useParams();
-  const category = mockCategories.find(c => c.slug === slug);
-  const categoryPosts = mockPosts.filter(post => 
-    post.categoryId === category?.id && post.status === 'published'
-  );
+  const [category, setCategory] = useState<Category | null>(null);
+  const [posts, setPosts] = useState<Post[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const [categoriesData, postsData] = await Promise.all([
+          databaseService.getCategories(),
+          databaseService.getPosts()
+        ]);
+        
+        const foundCategory = categoriesData.find(c => c.slug === slug);
+        const categoryPosts = postsData.filter(post => 
+          post.categoryId === foundCategory?.id && post.status === 'published'
+        );
+        
+        setCategory(foundCategory || null);
+        setPosts(categoryPosts);
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, [slug]);
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-blue-600"></div>
+      </div>
+    );
+  }
 
   if (!category) {
     return (
@@ -35,13 +69,13 @@ const Category = () => {
             {category.description}
           </p>
           <Badge className={`${category.color} text-white text-lg px-4 py-2`}>
-            {categoryPosts.length} posts
+            {posts.length} posts
           </Badge>
         </div>
 
-        {categoryPosts.length > 0 ? (
+        {posts.length > 0 ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {categoryPosts.map((post) => (
+            {posts.map((post) => (
               <PostCard key={post.id} post={post} />
             ))}
           </div>
