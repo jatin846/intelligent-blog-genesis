@@ -1,5 +1,4 @@
 
-import { siteConfig } from '@/config/site';
 import { AIPromptRequest, AIGeneratedContent } from '@/types';
 
 export class AIService {
@@ -8,9 +7,9 @@ export class AIService {
       const response = await fetch("https://openrouter.ai/api/v1/chat/completions", {
         method: "POST",
         headers: {
-          "Authorization": `Bearer ${siteConfig.openRouterApiKey}`,
-          "HTTP-Referer": siteConfig.url,
-          "X-Title": siteConfig.name,
+          "Authorization": "Bearer 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",
+          "HTTP-Referer": window.location.origin,
+          "X-Title": "BlogCMS",
           "Content-Type": "application/json"
         },
         body: JSON.stringify({
@@ -32,6 +31,25 @@ export class AIService {
     }
   }
 
+  private static async generateImageFromPexels(query: string): Promise<string> {
+    try {
+      const response = await fetch(`https://api.pexels.com/v1/search?query=${encodeURIComponent(query)}&per_page=1&orientation=landscape`, {
+        headers: {
+          'Authorization': '88Qykg1vwK4s2Q73EgXOvKaSxAH5VUHKMVGC2NBt1TXD2sJp0hnnsKia'
+        }
+      });
+      
+      const data = await response.json();
+      if (data.photos && data.photos.length > 0) {
+        return data.photos[0].src.large;
+      }
+      return 'https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d?w=800&h=600&fit=crop';
+    } catch (error) {
+      console.error('Error fetching image from Pexels:', error);
+      return 'https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d?w=800&h=600&fit=crop';
+    }
+  }
+
   static async generateBlogPost(request: AIPromptRequest): Promise<AIGeneratedContent> {
     const titlePrompt = `Create a compelling blog post title for: "${request.prompt}". Return only the title, nothing else.`;
     
@@ -49,9 +67,9 @@ export class AIService {
         this.callOpenRouter(excerptPrompt)
       ]);
 
-      // Generate a suggested image URL based on the topic
-      const imageKeywords = request.prompt.toLowerCase().replace(/[^a-z0-9\s]/g, '').split(' ').slice(0, 3).join('-');
-      const suggestedImage = `https://images.unsplash.com/photo-1488590528505-98d2b5aba04b?w=800&h=600&fit=crop&q=${imageKeywords}`;
+      // Generate image based on the prompt keywords
+      const imageKeywords = request.prompt.toLowerCase().replace(/[^a-z0-9\s]/g, '').split(' ').slice(0, 3).join(' ');
+      const suggestedImage = await this.generateImageFromPexels(imageKeywords);
 
       return {
         title: title.trim(),
